@@ -13,7 +13,7 @@ app.use(fileUpload({
 }));
 app.use(express.urlencoded({ limit: "20mb", extended: false, parameterLimit: 50000 }))
 app.use(express.json())
-var whitelist = ['http://localhost:8080']
+var whitelist = ['http://localhost:8080','https://blog.random.my.id']
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
