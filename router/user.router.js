@@ -9,6 +9,7 @@ router.post('/', validate(validation.loginValidation),userController.login)
 router.post('/register', validate(validation.registerValidation), userController.register)
 router.get('/me', userController.verifyToken)
 router.post('/change', checking.checking, userController.change)
+router.get('/@:username', userController.userOne)
 router.get('/logout', userController.logout)
 
 module.exports = router

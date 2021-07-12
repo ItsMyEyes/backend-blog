@@ -110,6 +110,29 @@ exports.logout = async (req,res) => {
     }
 }
 
+exports.userOne = async (req,res) => {
+    const { username } = req.params
+    const data = await  db.users.findOne({
+        where: {
+            username: username
+        },
+        attributes: ['username','bio','email'],
+        include: [
+            { 
+                model: db.posts, 
+                as: 'posts',
+                attributes: ['title','id','description','thumbail_url','date_created','date_updated','url_perma'],
+                include: [
+                    { model: db.like,as: "likePosts", attributes: ['id','date'] }
+                ],
+                order: [['likePosts','id']]
+            }
+        ]
+    })
+    res.json({ message: 'success', code: 200, data: data})
+
+}
+
 exports.change = async (req,res) => {
     const { name,username,notelp, bio } = req.body
     switch (req.body.me) {

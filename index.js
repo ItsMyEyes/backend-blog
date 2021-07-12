@@ -26,6 +26,9 @@ var corsOptions = {
 app.use(express.static(path.join(__dirname, 'uploads')));
 app.use(cors(corsOptions))
 
+//automation
+require('./automation/backup')
+
 app.use('/',require('./router/guest.router'))
 app.use('/auth',require('./router/user.router'))
 app.use('/follow',require('./router/follow.router'))
