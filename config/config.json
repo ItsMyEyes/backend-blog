@@ -20,10 +20,10 @@
     }
   },
   "production": {
-    "username": "root",
-    "password": "jeruk",
-    "database": "blog",
-    "host": "localhost",
+    "username": "kiyorade_user",
+    "password": "airforce407!",
+    "database": "kiyorade_blog",
+    "host": "178.18.241.97",
     "dialect": "mysql",
     "define": {
       "timestamps": false

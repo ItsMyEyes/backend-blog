@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha test/*.js",
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "production": "NODE_ENV=production node ."
   },
   "author": "",
   "license": "ISC",
