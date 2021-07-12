@@ -45,7 +45,6 @@ exports.all = async (req,res) => {
             {
                 model: db.posts, 
                 as: "categoryPost", 
-                attributes: ["id"],
             }
         ]
     });
@@ -74,10 +73,19 @@ exports.createCategory = async (req,res) => {
 }
 
 exports.detail = async (req,res) => {
-    const getData = await categorys.findOne({
+    const getData = await categorys.findAll({
         where: {
-            id: req.query.id
-        }
+            url_perma: req.query.url
+        },
+        include: [
+            {
+                model: db.posts, 
+                as: "categoryPost", 
+                include: [
+                    { model: db.users, as: "ownerPosting", attributes: ["username","name","profile_photo"] }
+                ]
+            }
+        ]
     });
     return res.status(200).json({ message: "Success one Category", statusCode: 200, data: getData })
 }

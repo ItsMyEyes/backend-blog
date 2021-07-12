@@ -1,29 +1,29 @@
 {
   "development": {
-    "username": "freedbtech_blognodejsuser",
-    "password": "Airforce407!",
-    "database": "freedbtech_blognodejs",
-    "host": "freedb.tech",
+    "username": "root",
+    "password": "jeruk",
+    "database": "blog",
+    "host": "localhost",
     "dialect": "mysql",
     "define": {
       "timestamps": false
     }
   },
   "test": {
-    "username": "freedbtech_blognodejsuser",
-    "password": "Airforce407!",
-    "database": "freedbtech_blognodejs",
-    "host": "freedb.tech",
+    "username": "root",
+    "password": "jeruk",
+    "database": "blog",
+    "host": "localhost",
     "dialect": "mysql",
     "define": {
       "timestamps": false
     }
   },
   "production": {
-    "username": "freedbtech_blognodejsuser",
-    "password": "Airforce407!",
-    "database": "freedbtech_blognodejs",
-    "host": "freedb.tech",
+    "username": "root",
+    "password": "jeruk",
+    "database": "blog",
+    "host": "localhost",
     "dialect": "mysql",
     "define": {
       "timestamps": false

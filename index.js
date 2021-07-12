@@ -32,6 +32,7 @@ app.use('/follow',require('./router/follow.router'))
 app.use('/posting',require('./router/post.router'))
 app.use('/category',require('./router/category.router'))
 app.use('/scrap',require('./router/scrap.router'))
+app.use('/like',require('./router/like.router'))
 
 app.use(function(err, req, res, next) {
     if (err instanceof ValidationError) {

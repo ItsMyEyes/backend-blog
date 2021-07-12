@@ -10,6 +10,7 @@ router.get('/getAll', postsController.all);
 router.post('/create', checkAuth.checking, validate(validation.post), postsController.createPosting)
 router.get('/detail', checkAuth.checking, postsController.detail)
 router.get('/detailBlog', postsController.detailBlog)
+router.get('/related', postsController.relatedPost)
 router.put('/edit', checkAuth.checking, validate(validation.post), postsController.editPosting)
 router.post('/category/create', checkAuth.checking, postsController.createPostingCategory)
 router.delete('/destroy', checkAuth.checking, postsController.deletePosting)

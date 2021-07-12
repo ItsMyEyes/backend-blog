@@ -28,6 +28,19 @@ module.exports = (sequelize, DataTypes) => {
             allowNull:false,
             type: DataTypes.STRING
         },
+        bio: {
+          allowNull: false,
+          type: DataTypes.TEXT
+        },
+        noTelp: {
+          allowNull: false,
+          type: DataTypes.TEXT
+        },
+        verification: {
+          allowNull: false,
+          type: DataTypes.STRING,
+          defaultValue: 'false'
+        },
         password: {
           allowNull: false,
           type: DataTypes.TEXT,

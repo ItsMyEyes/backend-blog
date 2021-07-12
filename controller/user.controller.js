@@ -1,5 +1,6 @@
 const db = require('../models')
 const bcrypt = require('bcrypt')
+const { Op } = require('sequelize')
 const jwt = require('jsonwebtoken')
 
 exports.login = async (req,res) => {
@@ -56,7 +57,9 @@ exports.register = async (req,res) => {
         'password': await bcrypt.hash(password, 15),
         'name': name,
         'username': username,
-        'profile_photo': profile_photo
+        'profile_photo': profile_photo,
+        'bio': '-',
+        'noTelp': ''
     })
 
     return res.status(201).json({ message: 'user success to make, you can login now!!!', statusCode: 201 })
@@ -104,5 +107,60 @@ exports.logout = async (req,res) => {
         })
     } else {
        return res.status(403).json({'message': 'Forbiden Users please go away','code': 403})
+    }
+}
+
+exports.change = async (req,res) => {
+    const { name,username,notelp, bio } = req.body
+    switch (req.body.me) {
+        case 'name':
+            db.users.update({ 
+                name: name
+            }, {
+                where: {
+                    id: req.user.id
+                }
+            }) 
+            res.json({ message: 'success', code: 200 }).status(200)
+            break;
+        case 'username':
+            const hello = await db.users.findOne({ where: { 
+                [Op.and]: {
+                    id: req.user.id,
+                    username: username
+                }
+             } })
+             if (hello) return res.status(400).json({ message: 'Username not available', code: 400 });
+             db.users.update({ 
+                username: username
+            }, {
+                where: {
+                    id: req.user.id
+                }
+            })
+            res.json({ message: 'success', code: 200 }).status(200)
+            break;
+        case 'notelp':
+            db.users.update({ 
+                notelp: notelp
+            }, {
+                where: {
+                    id: req.user.id
+                }
+            })
+            res.json({ message: 'success', code: 200 }).status(200)
+            break;
+        case 'bio':
+            db.users.update({ 
+                bio: bio
+            }, {
+                where: {
+                    id: req.user.id
+                }
+            })
+            res.json({ message: 'success', code: 200 }).status(200)
+            break;
+        default:
+            break;
     }
 }

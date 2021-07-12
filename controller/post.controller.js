@@ -2,8 +2,10 @@ const db = require('../models')
 const moment = require('moment')
 const posts = db.posts
 const url_seo = require('../helper/seo_url')
-const { Op, json } = require('sequelize')
+const { Op, literal, fn, col, json } = require('sequelize')
 const fs = require('fs')
+const path = require('path')
+const firebase = require('../config/firebase')
 
 exports.getPosting = async (req,res) => {
     const getAll = await posts.findAll({
@@ -16,10 +18,11 @@ exports.getPosting = async (req,res) => {
 
 exports.all = async (req,res) => {
     const getAll = await posts.findAll({
-        raw: true,
+        order: literal('rand()'),
         attributes: ["id","title","description","thumbail_url", "date_created", "date_updated", "url_perma", "id_post_user"],
         include: [
-            { model: db.users, as: "ownerPosting", attributes: ["username","name","profile_photo"] }
+            { model: db.users, as: "ownerPosting", attributes: ["username","name","profile_photo"] },
+            { model: db.like, as: "likePosts", attributes: ['id_users','id_posts'] }
         ]
     });
     return res.status(200).json({ message: "Success get all posting", statusCode: 200, data: getAll })
@@ -99,12 +102,37 @@ exports.detailBlog = async (req,res) => {
         },
         include: [
             { model: db.categorys, as: "category_postingan", attributes: ["id","title",'url_perma'] },
-            { model: db.users, as: "ownerPosting", attributes: ["username","name","profile_photo"] }
+            { model: db.users, as: "ownerPosting", attributes: ["username","name","profile_photo","bio"] }
         ]
     })
 
     if (!checkPost) return res.status(404).json({ message: "Nothing Posts in here", statusCode: 404 })
     return res.status(200).json({ message: "Success one posting", statusCode: 200, dataPost: checkPost })
+}
+
+exports.relatedPost = async (req,res) => {
+    const { id } = req.query
+    const related = await db.posts.findOne({
+        where: {
+            id: id
+        },
+        limit: 3,
+        attributes: ['id'],
+        include: [
+            { 
+                model: db.categorys, 
+                as: "category_postingan", 
+                attributes: ["id"],
+                include: [
+                    { 
+                        model: db.posts, as: "categoryPost", where: { id: { [Op.not]: id } }, attributes: ['title','url_perma','date_created','date_updated','thumbail_url'],
+                        include: [ { model: db.users, as: 'ownerPosting', attributes: ['username','email'] } ]
+                    }
+                ]
+            },
+        ]
+    })
+    return res.status(200).json({ message: 'success', code: 200, data: related, })
 }
 
 exports.detail = async (req,res) => {
@@ -189,7 +217,7 @@ exports.deletePosting = async (req,res) => {
     return res.status(201).json({ message: "Success delete Posts", statusCode: 201 })
 }
 
-exports.upload = (req,res) => {
+exports.upload = async (req,res) => {
     try {
         if(!req.files) {
             res.send({
@@ -202,24 +230,43 @@ exports.upload = (req,res) => {
             let type = image.mimetype
 
             if (type == "image/png" || type == "image/jpg" || type == "image/jpeg") {
-                //Use the mv() method to place the file in upload directory (i.e. "uploads")
+                const uid = firebase.uid
+                const metadata = {
+                    metadata: {
+                      // This line is very important. It's to create a download token.
+                      firebaseStorageDownloadTokens: uid
+                    },
+                    contentType: type,
+                    cacheControl: 'public, max-age=31536000',
+                  };
+                
+                  // Uploads a local file to the bucket
                 const buff = Buffer.from(req.user.id, 'utf-8');
                 const base64 = buff.toString('base64');
-                var dir = './uploads/'+base64+'/';
+                var dir = path.resolve('./uploads/'+base64+'/');
 
                 if (!fs.existsSync(dir)){
                     fs.mkdirSync(dir);
                 }
                 
-                image.mv(dir + image.name);
-
-                //send response
-                res.json({
+                image.mv(dir +'/'+ image.name);
+                const tempat = path.resolve(`./uploads/${base64}/${image.name}`)
+                    
+                await firebase.bucket.upload(tempat, {
+                // Support for HTTP requests made with `Accept-Encoding: gzip`
+                    gzip: true,
+                    metadata: metadata,
+                });
+                fs.unlinkSync(tempat)
+                 //send response
+                return res.json({
                     "success" : 1,
                     "file": {
-                        "url" : `http://localhost:8000/${base64}/${image.name}`,
+                        "url" : `https://firebasestorage.googleapis.com/v0/b/blog-3fde7.appspot.com/o/${image.name}?alt=media&token=${uid}`,
                     }
-                }).status(200);   
+                }).status(200); 
+
+                //send response   
             } else {
                 return res.json({
                     message: 'Only .png, .jpg and .jpeg format allowed!',
@@ -228,6 +275,7 @@ exports.upload = (req,res) => {
             }
         }
     } catch (err) {
+        console.log(err)
         res.status(500).send(err);
     }
 }
