@@ -24,10 +24,11 @@ const drive = google.drive({
 var job = new CronJob('0 00 * * *', function() {
     mysqldump({
         connection: {
-            host: 'localhost',
-            user: 'root',
-            password: 'jeruk',
-            database: 'blog',
+            host: 'bdhtzkjz0qamtzhg3tqh-mysql.services.clever-cloud.com',
+            user: 'uaxwdgttwvnmreug',
+            password: '17AXYcVXP6wtMdD2aY8',
+            database: 'bdhtzkjz0qamtzhg3tqh',
+            port: '20895',
         },
         dumpToFile: `./backup/backup-${moment().format('MMM-Do-YY')}.sql`,
     });
