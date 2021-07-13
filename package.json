@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha test/*.js",
-    "start": "NODE_ENV=production node .",
+    "start": "nodemon index.js",
     "production": "NODE_ENV=production node ."
   },
   "author": "",
@@ -28,8 +28,6 @@
     "sequelize": "^6.6.2",
     "sequelize-cli": "^6.2.0",
     "uuid-v4": "^0.1.0",
-    "googleapis": "^81.0.0",
-    "cron": "^1.8.2",
-    "mysqldump": "^3.2.0"
+    "googleapis": "^81.0.0"
   }
 }
