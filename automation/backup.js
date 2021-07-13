@@ -21,7 +21,7 @@ const drive = google.drive({
     auth: oauth2Client,
 });
 
-var job = new CronJob('* * * * *', function() {
+var job = new CronJob('0 00 * * *', function() {
     mysqldump({
         connection: {
             host: 'localhost',
