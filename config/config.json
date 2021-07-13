@@ -1,10 +1,11 @@
 {
   "development": {
-    "username": "root",
-    "password": "jeruk",
-    "database": "blog",
-    "host": "localhost",
+    "username": "uaxwdgttwvnmreug",
+    "password": "17AXYcVXP6wtMdD2aY8",
+    "database": "bdhtzkjz0qamtzhg3tqh",
+    "host": "bdhtzkjz0qamtzhg3tqh-mysql.services.clever-cloud.com",
     "dialect": "mysql",
+    "port": "20895",
     "define": {
       "timestamps": false
     }
