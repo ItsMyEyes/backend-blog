@@ -229,7 +229,7 @@ exports.search = async (req,res) => {
     })
     let arr = []
     data.forEach(element => {
-        const jadi_string = $(element.description).text().trim()
+        const jadi_string = $(element.description).text().trim().toLowerCase()
         if (jadi_string.includes(q) || element.title.includes(q)) {
             arr.push(element)
         }
