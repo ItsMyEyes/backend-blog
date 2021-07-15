@@ -11,7 +11,7 @@ const path = require('path')
 app.use(fileUpload({
   createParentPath: true
 }));
-app.use(express.urlencoded({ limit: "20mb", extended: false, parameterLimit: 50000 }))
+app.use(express.urlencoded({ limit: "50mb", extended: false }))
 app.use(express.json())
 var whitelist = ['http://localhost:8080','https://blog.random.my.id']
 var corsOptions = {
