@@ -248,7 +248,7 @@ exports.upload = async (req,res) => {
             //Use the name of the input field (i.e. "avatar") to retrieve the uploaded file
             let image = req.files.image;
             let type = image.mimetype
-            let largeFile = imaeg.length
+            let largeFile = image.length
             if (largeFile > 5120) return res.status(403).json({ message: 'File to large', code: 403 })
 
             if (type == "image/png" || type == "image/jpg" || type == "image/jpeg") {
