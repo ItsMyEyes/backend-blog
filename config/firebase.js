@@ -4,7 +4,7 @@ const uuid = require('uuid-v4');
 
 admin.initializeApp({
     credential: admin.credential.cert(secret),
-    storageBucket: 'blog-3fde7.appspot.com'
+    storageBucket: 'STORAGE'
 })
 
 module.exports.bucket = admin.storage().bucket()
