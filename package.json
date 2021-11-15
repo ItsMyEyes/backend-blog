@@ -1,14 +1,14 @@
 {
-  "name": "sosmed",
+  "name": "BackendMedi",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "mocha test/*.js",
-    "dev": "nodemon index.js",
-    "start": "NODE_ENV=production node ."
+    "dev": "nodemon serve.js",
+    "start": "NODE_ENV=production node serve.js"
   },
-  "author": "",
+  "author": "Kiyora",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",

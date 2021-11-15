@@ -29,8 +29,16 @@ exports.login = async (req,res) => {
     
     let payload = { uid: user.id }
     let accessToken = jwt.sign(payload, '#MBzh4ma9@dL(92n', {expiresIn: '1d'}); 
+    const showUser = {
+        'id': user.id,
+        'username': user.username,
+        'email': user.email,
+        'profile_photo': user.profile_photo,
+        'bio': user.bio,
+        'verification': user.verification,
+    }
 
-    return res.status(200).json({ message: 'success login, iam can make you happy', statusCode: 200, user: user, token: accessToken}) 
+    return res.status(200).json({ message: 'success login, iam can make you happy', statusCode: 200, user: showUser, token: accessToken}) 
 }
 
 exports.register = async (req,res) => {

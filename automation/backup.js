@@ -21,7 +21,7 @@ const drive = google.drive({
     auth: oauth2Client,
 });
 
-var job = new CronJob('0 00 * * *', function() {
+exports.job = new CronJob('0 00 * * *', function() {
     mysqldump({
         connection: {
             host: 'HOST',
@@ -50,4 +50,3 @@ var job = new CronJob('0 00 * * *', function() {
         console.log(error.message);
     }
 }, null, true, 'Asia/Jakarta');
-job.start();

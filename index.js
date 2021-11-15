@@ -2,7 +2,6 @@ const express = require('express')
 const app = express()
 const db = require('./models')  
 const cors = require('cors')
-let port = process.env.PORT || 8000
 const { ValidationError } = require('express-validation')
 const fileUpload = require('express-fileupload');
 const path = require('path')
@@ -24,7 +23,7 @@ var corsOptions = {
   }
 }
 app.use(express.static(path.join(__dirname, 'uploads')));
-app.use(cors(corsOptions))
+app.use(cors())
 
 //automation
 require('./automation/backup')
@@ -45,6 +44,8 @@ app.use(function(err, req, res, next) {
     return res.status(500).json(err)
 })
 
-db.sequelize.sync().then(() => {
-    app.listen(port, () => console.log(`app listening on ${port}`));
-})
+module.exports = app
+
+// db.sequelize.sync().then(() => {
+// app.listen(port, () => console.log(`app listening on ${port}`));
+// })
